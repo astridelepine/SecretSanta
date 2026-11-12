@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" width="800" height="700" role="img" aria-labelledby="t d">
+  <title id="t">Panneau Père Noël</title>
+  <desc id="d">Panneau triangulaire de signalisation avec un Père Noël qui porte une hotte, dessiné en noir</desc>
+
+  <!-- Liseré blanc extérieur -->
+  <polygon points="400,95 95,622 705,622" fill="#ffffff" stroke="#ffffff" stroke-width="44" stroke-linejoin="round"/>
+  <!-- Cadre rouge -->
+  <polygon points="400,95 95,622 705,622" fill="#d9161c" stroke="#d9161c" stroke-width="32" stroke-linejoin="round"/>
+  <!-- Intérieur blanc -->
+  <polygon points="400,150 142,596 658,596" fill="#ffffff" stroke="#ffffff" stroke-width="20" stroke-linejoin="round"/>
+
+  <!-- Père Noël portant sa hotte (noir uniquement) -->
+  <g transform="translate(251 288) scale(0.85)" fill="#000" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Hotte -->
+    <path d="M62 92 L142 102 L134 200 Q133 208 125 208 L86 204 Q78 203 77 195 Z" stroke-width="8"/>
+    <!-- Cadeaux qui dépassent -->
+    <circle cx="84" cy="80" r="17" stroke="none"/>
+    <rect x="104" y="64" width="24" height="34" rx="3" transform="rotate(10 116 81)" stroke="none"/>
+
+    <!-- Bretelle et bras qui tient la hotte -->
+    <path d="M150 104 L132 150" stroke-width="12" fill="none"/>
+    <path d="M160 128 L128 168" stroke-width="16" fill="none"/>
+    <circle cx="124" cy="172" r="10" stroke="none"/>
+
+    <!-- Jambe arrière -->
+    <path d="M172 228 L152 280 L120 304" stroke-width="26" fill="none"/>
+    <ellipse cx="106" cy="314" rx="30" ry="13" transform="rotate(-18 106 314)" stroke="none"/>
+
+    <!-- Jambe avant -->
+    <path d="M214 228 L234 278 L242 314" stroke-width="26" fill="none"/>
+    <ellipse cx="258" cy="326" rx="32" ry="13" stroke="none"/>
+
+    <!-- Manteau et ventre -->
+    <path d="M150 100 C134 140 136 190 150 222 L236 222 C256 186 250 140 226 108 Z" stroke-width="4"/>
+    <ellipse cx="222" cy="166" rx="36" ry="46" stroke="none"/>
+    <rect x="144" y="210" width="104" height="26" rx="13" stroke="none"/>
+
+    <!-- Bras avant -->
+    <path d="M230 122 L262 150" stroke-width="16" fill="none"/>
+    <circle cx="266" cy="154" r="10" stroke="none"/>
+
+    <!-- Tête et barbe -->
+    <circle cx="172" cy="66" r="22" stroke="none"/>
+    <path d="M158 70 C150 110 178 130 206 112 C214 96 210 78 202 70 Z" stroke="none"/>
+    <circle cx="198" cy="70" r="6" stroke="none"/>
+
+    <!-- Bonnet -->
+    <path d="M146 50 C148 22 170 4 196 8 C208 10 216 18 222 32 C206 30 196 34 194 50 Z" stroke-width="3"/>
+    <circle cx="227" cy="34" r="9" stroke="none"/>
+    <rect x="142" y="44" width="62" height="14" rx="7" stroke="none"/>
+  </g>
+</svg>
