@@ -1,1 +1,3 @@
 secretsanta.db
+__pycache__/
+.python-version
