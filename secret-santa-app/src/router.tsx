@@ -5,7 +5,6 @@ import CreateEventPage from "./pages/CreateSecretSanta";
 import AdminPage from "./pages/Admin";
 import RevealPage from "./pages/Reveal";
 import NotFoundPage from "./pages/NotFound";
-import type { Exclusion, Participant } from "./types";
 import CreatedPage from "./pages/Created";
 import SecretSantaPage from "./pages/SecretSanta";
 
