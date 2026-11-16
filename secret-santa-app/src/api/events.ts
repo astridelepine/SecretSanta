@@ -8,7 +8,7 @@ export const addSecretSanta = (
   exclusions: Exclusion[],
   name: string
 ) =>
-  request<CreateEventResponse>("/secret-santa", {
+  request<CreateEventResponse>("/secret-santa/", {
     method: "POST",
     body: JSON.stringify({
       name,
