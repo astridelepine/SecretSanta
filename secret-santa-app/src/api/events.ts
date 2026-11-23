@@ -1,5 +1,5 @@
 import { request } from "./client";
-import type { Participant, Exclusion, NameExclusion } from "../types";
+import type { Participant} from "../types";
 
 type CreateEventResponse = { id: string };
 

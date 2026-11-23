@@ -64,6 +64,7 @@ function RevealPage() {
                 setBeneficiaire(data.giftee);
             })
         .catch((error) => {
+            console.error("Erreur lors de la récupération du bénéficiaire :", error);
             setError("Erreur lors de la récupération du bénéficiaire.");
         });
     }
