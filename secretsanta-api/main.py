@@ -96,6 +96,7 @@ def verifmdp(key_groupe, prenom, mdp) :
 
 @app.post("/secret-santa/", response_model=CreateEventResponse, status_code=status.HTTP_201_CREATED)
 def add_secret_santa(data: EventCreate) :
+    print("Received data:", data)
     conn = utils.create_connection(bd)
     result = utils.create_secretsanta(data.name, [p.name for p in data.participants], [(e.person_a, e.person_b) for e in data.exclusions], conn)
     return result

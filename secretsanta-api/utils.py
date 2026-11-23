@@ -97,6 +97,7 @@ def create_groupe(nomgroupe, secret_key, conn):
 
 def create_secretsanta(nomgroupe, prenoms, exclusions,  conn):
     try:
+        print(exclusions)
         secret_key = generate_secret_key()
         create_groupe(nomgroupe, secret_key, conn)
         conn.commit()

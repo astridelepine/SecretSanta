@@ -62,6 +62,8 @@ function RevealPage() {
           const newMdp = await setNewMdp(code, name, mdp);
           setLog_in(true);
           setMdp_configured(true);
+          console.log("Mot de passe configuré avec succès :", newMdp);
+
         } catch (e) {
           setError(e instanceof Error ? "MDP incorrect" : "");
           console.log("MDP incorrect")
