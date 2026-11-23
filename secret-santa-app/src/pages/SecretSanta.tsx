@@ -33,7 +33,6 @@ function SecretSantaPage() {
       navigate(`/NotFound`,)
     });
   }, [code]);
-  console.log("personnes", personnes);
   const navigate = useNavigate();
 
   if (!personnes || personnes.length === 0) {

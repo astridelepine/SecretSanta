@@ -9,6 +9,8 @@ export type ParticipantIn = {
 
 export type Exclusion = [number, number];
 
+export type NameExclusion = [string, string];
+
 export type Event = {
   id: string;
   name: string;

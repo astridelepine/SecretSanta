@@ -67,7 +67,10 @@ function CreateSecretSantaPage() {
     setLoading(true);
     setError("");
     try {
-      const event = await addSecretSanta(participants, exclusions, nameSecretSanta.trim());
+      const nameExclusions = exclusions.map(([a, b]) => [participants.find((p) => p.id === a)?.name ?? "", participants.find((p) => p.id === b)?.name ?? ""]);
+      console.log("exclusions:", exclusions);
+      console.log(nameExclusions);
+      const event = await addSecretSanta(participants, nameExclusions, nameSecretSanta.trim());
       navigate(`/created/${event.id}`, { state: { nomgroupe: nameSecretSanta.trim(), key: event.id } });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Une erreur est survenue.");

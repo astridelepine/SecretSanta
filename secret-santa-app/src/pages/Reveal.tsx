@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { getBeneficiairefromAPI, getMdp, setNewMdp, verifyMdp } from "../api/events";
-import panneauPereNoel from "@/assets/panneau-pere-noel.svg";
+import panneauPereNoel from "/public/panneau-pere-noel.svg";
 
 function RevealPage() {
     const name = useParams<{ name: string }>().name || "";
     const { state } = useLocation();   // peut être null
-    const nomgroupe = state?.nomgroupe.nomgroupe || state?.nomgroupe;
+    const nomgroupe = state?.nomgroupe.nomgroupe || state?.nomgroupe || "";
     const key_groupe = state?.key_groupe;
     const [beneficiaire, setBeneficiaire] = useState<string | null>(null);
     const [mdp_configured, setMdp_configured] = useState<boolean>(false);
@@ -15,12 +15,9 @@ function RevealPage() {
     const [mdpConf, setMdpConf] = useState<string>("");
     const [error, setError] = useState<string>("");
     const code = key_groupe; // Utiliser le code du groupe pour les requêtes API
-    console.log("RevealPage", code, name, nomgroupe);
 
     useEffect(() => {
-        console.log("Vérification du mot de passe pour", name, "dans le groupe", code);
         getMdp(code, name).then((data) => {
-        console.log("Mdp configured:", data);
         setMdp_configured(data.configured_mdp);
         });
     }, [code, name]);
@@ -29,12 +26,9 @@ function RevealPage() {
         if (!mdp.trim()) return setError("Mdp requis.");
         setError("");
         try {
-          console.log("Création du mdp :", mdp);
           const newMdp = await verifyMdp(code, name, mdp);
-          console.log("Mdp vérifié :", newMdp);
           if (newMdp) {
             setLog_in(true);
-            console.log("Nouveau mdp créé :", newMdp);
           }
         } catch (e) {
           setError(e instanceof Error ? e.message : "");
@@ -49,14 +43,13 @@ function RevealPage() {
         if (mdp !== mdpConf) return setError("les deux champs doivent être identiques.");
         setError("");
         try {
-          console.log("Création du mdp :", mdp);
           const newMdp = await setNewMdp(code, name, mdp);
-          console.log("Nouveau mdp créé :", newMdp);
           setLog_in(true);
           setMdp_configured(true);
           console.log("Nouveau mdp créé :", newMdp);
         } catch (e) {
-          setError(e instanceof Error ? e.message : "");
+          setError(e instanceof Error ? "MDP incorrect" : "");
+          console.log("MDP incorrect")
         } finally {
           setError("");
           setMdp("");
@@ -71,13 +64,11 @@ function RevealPage() {
                 setBeneficiaire(data.giftee);
             })
         .catch((error) => {
-            console.error("Erreur lors de la récupération du bénéficiaire :", error);
             setError("Erreur lors de la récupération du bénéficiaire.");
         });
     }
     }, [log_in, beneficiaire, code, name]);
 
-    console.log("RevealPage", mdp_configured, log_in);
 
     return (
         <div className="flex flex-col items-center space-y-4">

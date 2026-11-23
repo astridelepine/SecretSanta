@@ -105,6 +105,8 @@ def create_secretsanta(nomgroupe, prenoms, exclusions,  conn):
         if exclusions != []:
             create_exclusion(exclusions, secret_key, conn)
             conn.commit()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM exclusion WHERE key_groupe = ?", (secret_key,))
         secret_key = run_tirage(secret_key, conn.cursor(), conn)
         return CreateEventResponse(id=secret_key)
         
@@ -115,9 +117,7 @@ def set_mdp(prenom, mdp, key_groupe, conn):
     try:
         c = conn.cursor()
         mdp_existant = c.execute("SELECT mdp FROM personnes WHERE prenom = ? AND key_groupe = ?", (prenom, key_groupe)).fetchone()
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", mdp_existant)
         if mdp_existant[0] is not None:
-            print(f"Le mot de passe pour {prenom} dans le groupe {key_groupe} existe déjà.")
             return False
         mdp_hash = hashlib.sha256(mdp.encode('utf-8')).hexdigest()
         c.execute("""
@@ -126,7 +126,6 @@ def set_mdp(prenom, mdp, key_groupe, conn):
             WHERE prenom = ? AND key_groupe = ?
         """, (mdp_hash, prenom, key_groupe))
         conn.commit()
-        print(f"Mot de passe pour {prenom} dans le groupe {key_groupe} mis à jour avec succès.")
         return True
     except Error as e:
         print(e)
@@ -139,7 +138,6 @@ def get_participants_by_code(secret_key, conn):
         rows = c.fetchall()
         if not rows:
             return None
-        print(f"Participants for secret key {secret_key}: {[row[0] for row in rows]}")
         return [ParticipantIn(name=row[0]) for row in rows]
     except Error as e:
         print(e)
@@ -152,7 +150,6 @@ def getNomGroupe(secret_key, conn):
         row = c.fetchone()
         if row is None:
             return None
-        print(f"Nom du groupe for secret key {secret_key}: {row[0]}")
         return {"nomgroupe": row[0]}
     except Error as e:
         print(e)
@@ -164,14 +161,11 @@ def get_existing_mdp (key_groupe, prenom, conn) :
       cur.execute("SELECT mdp FROM personnes where lower(prenom) = lower(?) and key_groupe = ?", (prenom, key_groupe, ))
       row = cur.fetchone()
       rep = row[0]
-      print(row)
       if rep is not None :
-          print (rep)
           rep = True
       else :
           rep = False
     except :
-        print("erreur get_existing_mdp")
         rep = 'nulleeee'
     return rep
 
@@ -181,11 +175,9 @@ def verifmdp (key_groupe, prenom, mdp, conn) :
       cur = conn.cursor()
       cur.execute("SELECT mdp FROM personnes where lower(prenom) = lower(?) and key_groupe = ?", (prenom, key_groupe, ))
       row = cur.fetchone()
-      print( row)
       mdp_hash = row[0]
       rep = hmac.compare_digest(mdp_hash, mdp)
     except error as e:
-        print(e)
         rep = 'nulleeee'
     return rep
 
@@ -241,11 +233,9 @@ def tireHasard(secret_key, cur, conn, liste) :
             )
         """, (secret_key, i, i, i))
         tabpossible = [row[0] for row in cur.fetchall()]
-        print("tabpossible pour ", i, " : ", tabpossible)
             
         nbgens = len(tabpossible)
         if nbgens == 0 :
-            print("Pas de possibilité pour ", i, " on recommence tout")
             cur.execute("UPDATE personnes SET cadeaua = NULL, attribuer = 0 where key_groupe = ?", (secret_key,))
             conn.commit()
             tireHasard(secret_key, cur, conn, liste)
@@ -263,9 +253,6 @@ def tireHasard(secret_key, cur, conn, liste) :
 
             cur = conn.cursor()
             cur.execute("SELECT * FROM personnes where key_groupe = ?", (secret_key,))
-            rows = cur.fetchall()
-            for row in rows:
-                print(row)
 
 def generate_secret_key():
     """Génère une clé secrète aléatoire"""

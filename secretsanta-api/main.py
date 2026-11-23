@@ -15,8 +15,6 @@ bd = r'secretsanta.db'
 #conn = sqlite3.connect('appliNoel.db')
 #cursor = conn.cursor()
 #fonction.create_connection(bd)
-# print(bd)   
-# print(type(bd))
 
 app = FastAPI()
 
@@ -81,23 +79,19 @@ def getnomgroupe(key_groupe) :
 @app.get("/mdp/{key_groupe}/{prenom}")
 def getmdp(key_groupe, prenom) :
     conn = utils.create_connection(bd)
-    print(f"Fetching existing password for group: {key_groupe}, prenom: {prenom}")
     result = utils.get_existing_mdp(key_groupe, prenom, conn)
-    print("Existing mdp:", result)
     return {"configured_mdp": result}
 
 @app.put("/mdp/{key_groupe}/{prenom}/{mdp}")
 def updatemdp(key_groupe, prenom, mdp) :
     conn = utils.create_connection(bd)
     result = utils.set_mdp(prenom, mdp, key_groupe, conn)
-    print("Update result:", result)
     return result
 
 @app.get("/verify-mdp/{key_groupe}/{prenom}/{mdp}")
 def verifmdp(key_groupe, prenom, mdp) :
     conn = utils.create_connection(bd)
     result = utils.verifmdp(key_groupe, prenom, mdp, conn)
-    print("Verification result:", result)
     return result
 
 @app.post("/secret-santa/", response_model=CreateEventResponse, status_code=status.HTTP_201_CREATED)
@@ -108,7 +102,6 @@ def add_secret_santa(data: EventCreate) :
 
 @app.get("/secret-santa/{key_groupe}", response_model=list[ParticipantIn], status_code=status.HTTP_200_OK)
 def get_secret_santa(key_groupe: str):
-    print(f"Fetching participants for secret key: {key_groupe}")
     conn = utils.create_connection(bd)
     result = utils.get_participants_by_code(key_groupe, conn)
     if result is None:

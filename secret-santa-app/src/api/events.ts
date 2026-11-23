@@ -1,11 +1,11 @@
 import { request } from "./client";
-import type { Participant, Exclusion } from "../types";
+import type { Participant, Exclusion, NameExclusion } from "../types";
 
 type CreateEventResponse = { id: string };
 
 export const addSecretSanta = (
   participants: Participant[],
-  exclusions: Exclusion[],
+  exclusions: string[][],
   name: string
 ) =>
   request<CreateEventResponse>("/secret-santa/", {
