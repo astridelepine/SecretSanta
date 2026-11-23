@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { getBeneficiairefromAPI, getMdp, setNewMdp, verifyMdp } from "../api/events";
-import panneauPereNoel from "/public/panneau-pere-noel.svg";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { getBeneficiairefromAPI, getMdp, getNomGroupeByCode, setNewMdp, verifyMdp } from "../api/events";
+import panneauPereNoel from "@/assets/panneau-pere-noel.svg";
 
 function RevealPage() {
     const name = useParams<{ name: string }>().name || "";
     const { state } = useLocation();   // peut être null
-    const nomgroupe = state?.nomgroupe.nomgroupe || state?.nomgroupe || "";
+    const nomgroupe = state?.nomgroupe?.nomgroupe || state?.nomgroupe || null;
     const key_groupe = state?.key_groupe;
     const [beneficiaire, setBeneficiaire] = useState<string | null>(null);
     const [mdp_configured, setMdp_configured] = useState<boolean>(false);
@@ -16,11 +16,27 @@ function RevealPage() {
     const [error, setError] = useState<string>("");
     const code = key_groupe; // Utiliser le code du groupe pour les requêtes API
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         getMdp(code, name).then((data) => {
         setMdp_configured(data.configured_mdp);
         });
     }, [code, name]);
+
+    useEffect(() => {
+        if (nomgroupe === null) {
+          getNomGroupeByCode(key_groupe).then((data: any) => {
+            if (data) {
+              state.nomgroupe = data.nomgroupe;
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la récupération du nom du groupe :", error);
+            navigate(`/NotFound`,);
+          });
+        }
+      }, [key_groupe, nomgroupe, state]);
 
     const handleLogin = async () => {
         if (!mdp.trim()) return setError("Mdp requis.");
@@ -46,7 +62,6 @@ function RevealPage() {
           const newMdp = await setNewMdp(code, name, mdp);
           setLog_in(true);
           setMdp_configured(true);
-          console.log("Nouveau mdp créé :", newMdp);
         } catch (e) {
           setError(e instanceof Error ? "MDP incorrect" : "");
           console.log("MDP incorrect")
@@ -96,7 +111,7 @@ function RevealPage() {
                     <p>Configure ton mot de passe :</p>
                     <input type="password" className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2  focus:ring-red-500" placeholder="Entrez un mot de passe" onChange={(e) => setMdp(e.target.value)} />
                     <input type="password" className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2  focus:ring-red-500" placeholder="Confirmez le mot de passe" onChange={(e) => setMdpConf(e.target.value)} />
-                    <button onClick={() => {handleLogOn()}} className="rounded-md bg-red-800 px-4 py-2 text-white hover:bg-red-700" >
+                    <button onClick={(e) => {e.preventDefault(); handleLogOn()}} className="rounded-md bg-red-800 px-4 py-2 text-white hover:bg-red-700" >
                         Valider
                     </button>
                 </div>

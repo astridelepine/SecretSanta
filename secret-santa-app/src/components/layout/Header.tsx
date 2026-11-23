@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import pereNoel from "@/assets/panneau-pere-noel-ancien.svg";
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   `px-3 py-2 rounded-md transition ${
@@ -11,7 +12,7 @@ export default function Header() {
       <div className="flex items-center justify-between px-4 py-4">
         <Link to="/" className="text-xl font-bold text-white">
           <div className="flex items-center">
-            <img src="/public/panneau-pere-noel-ancien.svg" alt="Panneau du Père Noël" className="w-8 h-8 mr-2" />
+            <img src={pereNoel} alt="Panneau du Père Noël" className="w-8 h-8 mr-2" />
             Secret Santa
           </div>
         </Link>

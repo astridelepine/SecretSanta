@@ -41,6 +41,7 @@ function SecretSantaPage() {
     return (
         <div className="container mx-auto flex flex-col items-center space-y-4">
             <h1 className="text-4xl">Secret Santa {nomgroupe?.nomgroupe}</h1>
+            <p className="text-2xl"> Qui est tu ?</p>
             <div className="flex w-full max-w-xs flex-col gap-3 sm:max-w-sm">
               {personnes.map((p) => (
                   <button key={p.name} className="w-full truncate rounded-md bg-red-800 px-4 py-2 text-base text-white hover:bg-red-700 sm:text-lg" onClick={() => navigate(`/reveal/${code}/${p.name}`, { state: { nomgroupe: nomgroupe, key_groupe: key_groupe } })}>
